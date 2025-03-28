@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Large HTML Code</title>
+</head>
+<body>
+
+<h2>JAVA Code:</h2>
+<pre id="code-block"></pre>
+
+<script>
+    // Your large HTML file as a string
+    let code = `  SLIP-1
+Q1. Write a Java program using Multithreading to display all the 
+alphabets between ‘A’ to ‘Z’ after every 2 seconds.
+import java.lang.*;
+class AlphaThread extends Thread{
+char ch;
+@Override
+public void run() {
+try {
+for(ch = 65;ch<=90; ch++){
+System.out.println(""+ch);
+Thread.sleep(2000);
+}
+} catch (Exception e) {
+System.out.println("Error = "+e);
+}
+}
+}
+public class S1Q1_LinkedList {
+public static void main(String[] args) {
+AlphaThread at = new AlphaThread();
+at.start();
+}
+}
+Q2.Write a Java program to accept the details of Employee (Eno, 
+EName, Designation, Salary) from a user and store it into the 
+database. (Use Swing)
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+class EmpDB extends JFrame implements ActionListener {
+Connection con = null;
+Statement st = null;
+JLabel lblEno,lblEname,lblEdesg,lbleSal;
+JTextField txtEno,txtEname,txtEdesg,txteSal;
+JButton btnSave;
+EmpDB()
+{
+try {
+setSize(500,300);
+setVisible(true);
+setLayout(new FlowLayout());
+lblEno = new JLabel("Emp No ");
+lblEname = new JLabel("Emp Name ");
+lblEdesg = new JLabel("Designation ");
+lbleSal = new JLabel("Salary ");
+txtEno = new JTextField(5);
+txtEname = new JTextField(20);
+txtEdesg = new JTextField(10);
+txteSal = new JTextField(10);
+btnSave = new JButton("Save");
+add(lblEno); add(txtEno); add(lblEname); add(txtEname);
+add(lblEdesg); add(txtEdesg); add(lbleSal); add(txteSal);
+add(btnSave);
+btnSave.addActionListener(this);
+Class.forName("org.postgresql.Driver");
+con=
+DriverManager.getConnection("jdbc:postgresql://localhost:5433/TYCSDB","postgres","root");
+System.out.println("Con Created...");
+} catch (ClassNotFoundException | SQLException e) {
+throw new RuntimeException(e);
+}
+}
+public void actionPerformed(ActionEvent e){
+int eno= Integer.parseInt(txtEno.getText());
+String enm = txtEname.getText();
+String edesg = txtEdesg.getText();
+double esal = Double.parseDouble(txteSal.getText());
+if(e.getSource()==btnSave)
+{
+try {
+st = con.createStatement();
+st.executeUpdate("Insert into employee 
+values("+eno+",'"+enm+"','"+edesg+"',"+esal+")");
+//insert into emp values(101,'xyz','HOD',22222.22);
+JOptionPane.showMessageDialog(this,"Record Saved.");
+} catch (SQLException ex) {
+throw new RuntimeException(ex);
+}
+}
+}
+}
+public class S1Q2_EmpDB {
+public static void main(String[] args) {
+EmpDB ed = new EmpDB();
+}
+}
+
+
+SLIP-2
+Q1. Write a java program to read ‘N’ names of your friends, store it 
+into HashSet and display them in ascending order.
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.HashSet;
+import java.util.TreeSet;
+public class S2Q1_HS_FriendName {
+public static void main(String[] args) {
+int n =0,i=0;
+HashSet fnames = new HashSet();
+BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+try
+{
+System.out.print("How many friend names you wants? ");
+n = Integer.parseInt(br.readLine());
+System.out.println("Enter "+n+" name of your friends");
+for(i=0;i<n;i++)
+fnames.add(br.readLine());
+System.out.println("Original List = "+fnames);
+TreeSet ts = new TreeSet(fnames);
+System.out.println("After sort List = "+ts);
+} catch (Exception e) {
+throw new RuntimeException(e);
+}
+}
+}
+Q2.Design a servlet that provides information about a HTTP 
+request from a client, such as IP-Address and browser type. The 
+servlet also provides information about the server on which the 
+servlet is running, such as the operating system type, and the 
+names of currently loaded servlets.
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+import java.util.*;
+public class S2Q2_ServInfo extends HttpServlet
+{
+public void service(HttpServletRequest req, HttpServletResponse resp) throws
+ServletException,IOException
+{
+resp.setContentType("text/html");
+PrintWriter pw = resp.getWriter();
+// Get client information
+String clientIp = req.getRemoteAddr();
+String clientHost = req.getRemoteHost();
+String browser = req.getHeader("User-Agent");
+// Get server information
+ServletContext context = getServletContext();
+String serverName = req.getServerName();
+int serverPort = req.getServerPort();
+String serverOS = System.getProperty("os.name");
+String serverVersion = context.getServerInfo();
+// Get list of loaded servlets
+StringBuffer loadedServlets = new StringBuffer();
+List<ServletRegistration> servletList = new
+ArrayList<>(context.getServletRegistrations().values());
+for (int i = 0; i < servletList.size(); i++) {
+loadedServlets.append(servletList.get(i).getName()).append("<br>");
+}
+// Generate the resp
+pw.println("<html><head><title>Request & Server Info</title></head><body>");
+pw.println("<h2>Client Information</h2>");
+pw.println("IP Address: " + clientIp + "<br>");
+pw.println("Host Name: " + clientHost + "<br>");
+pw.println("Browser: " + browser + "<br>");
+pw.println("<h2>Server Information</h2>");
+pw.println("Server Name: " + serverName + "<br>");
+pw.println("Server Port: " + serverPort + "<br>");
+pw.println("Operating System: " + serverOS + "<br>");
+pw.println("Server Version: " + serverVersion + "<br>");
+pw.println("<h2>Loaded Servlets</h2>");
+pw.println(loadedServlets.toString());
+pw.println("</body></html>");
+}
+}
+
+
+SLIP-3
+Q1.Write a JSP program to display the details of Patient (PNo, 
+PName, Address, age, disease) in tabular form on browser.
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head><title>Patient Details</title></head>
+<body><h2>Patient Details</h2>
+<%
+// Sample patient data
+int pNo = 101;
+String pName = "Ronak";
+String address = "Silvassa";
+int age = 41;
+String disease = "Fever";
+%>
+<table border = 1px>
+<tr>
+<th>Patient Number</th>
+<th>Patient Name</th>
+<th>Address</th>
+<th>Age</th>
+<th>Disease</th>
+</tr>
+<tr>
+<td><%= pNo %></td>
+<td><%= pName %></td>
+<td><%= address %></td>
+<td><%= age %></td>
+<td><%= disease %></td>
+</tr>
+</table>
+</body>
+</html>
+Q2.Write a Java program to create LinkedList of String objects and 
+perform the following: i. Add element at the end of the list ii. 
+Delete first element of the list iii. Display the contents of list in 
+reverse order
+public class S3Q2_LinkedList_Op {
+public static void main(String[] args) {
+LinkedList<String> list = new LinkedList<String>();
+ list.add("Apple");
+list.add("Banana");
+list.add("Cherry");
+list.add("Date");
+System.out.println("Original LinkedList: " + list);
+list.addLast("Papaya");
+System.out.println("After inserting last element LinkedList: " + list);
+if (!list.isEmpty()) {
+list.removeFirst();
+}
+System.out.println("After removing first element: " + list);
+ System.out.print("LinkedList in reverse order: ");
+Iterator i = list.descendingIterator();
+while (i.hasNext()) {
+System.out.print(i.next() + " ");
+}
+}
+}
+
+
+SLIP-8
+Q1.Write a java program to define a thread for printing text on 
+output screen for ‘n’ number of times. Create 3 threads and run 
+them. Pass the text ‘n’ parameters to the thread constructor. 
+Example: i. First thread prints “COVID19” 10 times. ii. Second 
+thread prints “LOCKDOWN2020” 20 times iii. Third thread prints 
+“VACCINATED2021” 30 times [
+class CovideThread extends Thread {
+String TName;
+int n;
+public CovideThread(String text, int ntimes) {
+TName = text;
+n = ntimes;
+}
+public void run() {
+for (int i = 1; i <= n; i++) {
+System.out.println(i+")"+TName);
+try {
+Thread.sleep(1000);
+} catch (InterruptedException e) {
+throw new RuntimeException(e);
+}
+}
+}
+}
+public class S8Q1_Covide {
+public static void main(String[] args) {
+CovideThread t1 = new CovideThread("COVID19", 10);
+CovideThread t2 = new CovideThread("LOCKDOWN2020", 20);
+CovideThread t3 = new CovideThread("VACCINATED2021", 30);
+t1.start();
+t2.start();
+t3.start();
+}
+}
+Q2.Write a JSP program to check whether a given number is prime 
+or not. Display the result in red color.
+<%@ page language="java"%>
+<html>
+<body><form method="post">
+Enter a number: <input type="text" name="txtno">
+<input type="submit" value="Check">
+</form>
+<%
+ String StrNo = request.getParameter("txtno");
+if(StrNo != null && !StrNo.isEmpty())
+{
+int txtno = Integer.parseInt(StrNo);
+int f = 1;
+ for (int i = 2; i <txtno; i++) {
+if (txtno % i == 0) {
+f = 0;
+break;
+}
+}
+if(f==1)
+ out.println("Number is Prime");
+ else
+ out.println("Number is Not Prime");
+}
+%>
+</body>
+</html>
+
+
+SLIP-12
+Q1.Write a JSP program to check whether given number is Perfect 
+or not. (Use Include directive).
+<%@ page language="java" contentType="text/html;" %>
+<%@ include file="perfect.jsp" %>
+<!DOCTYPE html>
+<html>
+<head>
+<title>Perfect Number</title>
+</head>
+<body>
+<h2>Check if a Number is Perfect</h2>
+<form method="post">
+Enter a number to check: <input type="text" name="n1" />
+<input type="submit" value="Check" />
+</form>
+<%
+if (request.getParameter("n1") != null && !request.getParameter("n1").isEmpty()) 
+ {
+if (isPerfect) {
+%>
+<h2 style="color:red;"><%= request.getParameter("n1") %> is a Perfect Number.</h2>
+<%
+} else {
+%>
+<h2 style="color:red;"><%= request.getParameter("n1") %> is NOT a Perfect
+Number.</h2>
+<%
+}
+}
+%>
+</body>
+</html>
+
+<b>perfect.jsp</b>
+<% int number = Integer.parseInt(request.getParameter("n1"));
+int sum = 0;
+for (int i = 1; i < number; i++) {
+ if (number % i == 0) { // Fixed the comparison operator
+ sum =sum+ i; // Add the divisor to the sum
+ }
+}
+if (sum == number) {
+ return true; // The number is perfect
+} else {
+ return false; // The number is not perfect
+}
+%>
+
+Q2.Write a Java Program to create a PROJECT table with field’s 
+project_id, Project_name, Project_description, Project_Status. 
+Insert values in the table. Display all the details of the PROJECT 
+table in a tabular format on the screen.(using swing).
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.sql.*;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
+class ProjectFrm extends JFrame implements ActionListener
+{
+JTextField txtpid, txtpname, txtpdesc, txtpstatus;
+JButton btnInsert, btnDisp;
+JTable pTable;
+DefaultTableModel tableModel;
+Connection con = null;
+Statement st = null;
+ResultSet rs = null;
+PreparedStatement pst = null;
+public ProjectFrm()
+{
+setSize(600, 400);
+setVisible(true);
+setLayout(new FlowLayout());
+add(new JLabel("Project ID:"));
+txtpid = new JTextField(3);
+add(txtpid);
+add(new JLabel("Project Name:"));
+txtpname = new JTextField(10);
+add(txtpname);
+add(new JLabel("Project Description:"));
+txtpdesc = new JTextField(15);
+add(txtpdesc);
+add(new JLabel("Project Status:"));
+txtpstatus = new JTextField(10);
+add(txtpstatus);
+btnInsert = new JButton("Insert");
+btnDisp = new JButton("Display");
+add(btnInsert);
+add(btnDisp);
+// Table
+String[] columnNames = {"Project No", "Project Name", "Desc","Status"};
+tableModel = new DefaultTableModel(columnNames, 0);
+pTable = new JTable(tableModel);
+JScrollPane scrollPane = new JScrollPane(pTable);
+scrollPane.setPreferredSize(new Dimension(500, 200));
+add(scrollPane);
+btnInsert.addActionListener(this);
+btnDisp.addActionListener(this);
+try {
+Class.forName("org.postgresql.Driver");
+con=
+DriverManager.getConnection("jdbc:postgresql://localhost:5432/TYCSDB","postgres","root");
+} catch (Exception e) {
+throw new RuntimeException(e);
+}
+}
+public void actionPerformed(ActionEvent e)
+{
+if(e.getSource()==btnInsert)
+{
+try{
+int pno =Integer.parseInt(txtpid.getText());
+String pnm = txtpname.getText();
+String pdsc = txtpdesc.getText();
+String pstatus = txtpstatus.getText();
+pst = con.prepareStatement("INSERT INTO PROJECT VALUES (?, ?, ?, ?)");
+pst.setInt(1, pno);
+pst.setString(2, pnm);
+pst.setString(3, pdsc);
+pst.setString(4, pstatus);
+pst.executeUpdate();
+JOptionPane.showMessageDialog(this, "Record Saved..");
+}catch (Exception ex)
+{
+JOptionPane.showMessageDialog(this, "Error" + ex);
+}
+}
+else if(e.getSource()==btnDisp)
+{
+//tableModel.setRowCount(0); // Clear the table
+try {
+tableModel.setRowCount(0);
+// Fetch data from the database
+pst = con.prepareStatement("SELECT * FROM employee");
+rs = pst.executeQuery();
+// Populate the JTable
+while (rs.next()) {
+Vector<String> row = new Vector<String>();
+row.add("" + rs.getInt(1));
+row.add(rs.getString(2));
+row.add(rs.getString(3));
+row.add("" + rs.getString(3));
+tableModel.addRow(row);
+}
+}catch (SQLException ex)
+{
+JOptionPane.showMessageDialog(this, "Error " + ex);
+}
+}
+}
+}
+class S12Q2_ProjectDB
+{
+public static void main(String[] args) {
+new ProjectFrm();
+}
+}
+
+
+SLIP-15
+Q1.Write a java program to display name and priority of a Thread.
+class Name_n_PriorityThread extends Thread {
+public void run() {
+System.out.println("Thread Name: " + Thread.currentThread().getName());
+System.out.println("Thread Priority: " + Thread.currentThread().getPriority());
+}
+}
+public class S15Q1_ThreadNamePriority {
+public static void main(String[] args) {
+Name_n_PriorityThread t = new Name_n_PriorityThread();
+t.setName("MyThread");
+t.setPriority(Thread.MAX_PRIORITY); // MAX_PRIORITY is 10
+t.start();
+ System.out.println("Main Thread Name: " + Thread.currentThread().getName());
+System.out.println("Main Thread Priority: " + Thread.currentThread().getPriority());
+}
+}
+Q2.Write a SERVLET program which counts how many times a user 
+has visited a web page. If user is visiting the page for the first time, 
+display a welcome message. If the user is revisiting the page, 
+display the number of times visited. (Use Cookie)
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.annotation.*;
+import javax.servlet.http.*;
+@WebServlet("/visit-counter")
+public class S15Q2_VisitCountServ extends HttpServlet
+{
+protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException
+{
+resp.setContentType("text/html");
+PrintWriter pw = resp.getWriter();
+int visitCount = 1;
+Cookie[] cookies = req.getCookies();
+if (cookies != null) {
+for (int i = 0; i < cookies.length; i++) {
+if (cookies[i].getName().equals("visitCount")) {
+visitCount = Integer.parseInt(cookies[i].getValue()) + 1;
+}
+}
+}
+Cookie visitCookie = new Cookie("visitCount", String.valueOf(visitCount));
+resp.addCookie(visitCookie);
+if(visitCount == 1 )
+pw.println("<h2>Welcome! This is your first visit.</h2>");
+else
+pw.println("<h2>You have visited this page " + visitCount + " times.</h2>");
+}
+}
+
+
+SLIP-16
+Q1.Write a java program to create a TreeSet, add some colors 
+(String) and print out the content of TreeSet in ascending order.
+import java.util.TreeSet;
+public class S16Q1_TreeSet {
+public static void main(String[] args) 
+{
+TreeSet t = new TreeSet();
+t.add("Red");
+t.add("Green");
+t.add("Blue");
+t.add("Orange");
+t.add("Pink");
+t.add("Gray");
+System.out.println("The elements of TreeSet is = "+t);
+}
+}
+Q2.Write a Java program to accept the details of Teacher (TNo, 
+TName, Subject). Insert at least 5 Records into Teacher Table and 
+display the details of Teacher who is teaching “JAVA” Subject. (Use 
+PreparedStatement Interface)
+import java.io.*;
+import java.sql.*;
+class TeacherInfo
+{
+int tno=0,n=0;
+String tname="",tsub="";
+Connection con =null;
+PreparedStatement pst = null;
+ResultSet rs = null;
+BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+TeacherInfo()
+{
+try {
+Class.forName("org.postgresql.Driver");
+con =
+DriverManager.getConnection("jdbc:postgresql://localhost:5432/TYCSDB","postgres","root");
+} catch (ClassNotFoundException | SQLException e) {
+throw new RuntimeException(e);
+}
+}
+public void insertData()
+{
+try {
+System.out.println("How many record you want to insert :");
+n = Integer.parseInt(br.readLine());
+for (int i=0;i<n;i++) {
+System.out.println("Enter the students data as number,name & subject");
+pst = con.prepareStatement("insert into teacher values(?,?,?)");
+pst.setInt(1, Integer.parseInt(br.readLine()));
+pst.setString(2, br.readLine());
+pst.setString(3, br.readLine());
+pst.executeUpdate();
+System.out.println("Record Saved..");
+}
+} catch (Exception e) {
+System.out.println("Error = "+e);
+}
+}
+public void DispData()
+{
+try {
+pst = con.prepareStatement("select * from teacher where tsub = 'Java'");
+rs = pst.executeQuery();
+System.out.println("Teacher No\tName\tSub");
+while (rs.next())
+{
+System.out.println(rs.getInt(1)+"\t"+rs.getString(2)+"\t"+rs.getString(3));
+}
+} catch (SQLException e) {
+throw new RuntimeException(e);
+}
+}
+}
+public class S16Q2_TeacherDB {
+public static void main(String[] args) {
+TeacherInfo ti = new TeacherInfo();
+ti.insertData();
+ti.DispData();
+}
+}
+
+
+SLIP-18
+Q1.Write a java program using Multithreading to display all the 
+vowels from a given String. Each vowel should be displayed after 
+every 3 seconds.
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+class VowelThread extends Thread {
+String inputStr;
+int len,j=0;
+char vowels[]={'a','e','i','o','u'};
+BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+public VowelThread() {
+try{
+System.out.println("Enter any string : ");
+inputStr = br.readLine();
+len = inputStr.length();
+} catch (Exception e) {
+System.out.println("Error = "+e);
+}
+}
+public void run() {
+for (int i = 0; i <len; i++) {
+char ch = inputStr.charAt(i);
+for(j=0;j< vowels.length;j++)
+if(ch==vowels[j])
+System.out.print(" "+ch);
+try {
+Thread.sleep(3000);
+} catch (InterruptedException e) {
+throw new RuntimeException(e);
+}
+}
+}
+}
+public class S18Q1_VowelThread
+{
+public static void main(String[] args)
+{
+VowelThread t1 = new VowelThread();
+t1.start();
+}
+}
+Q2.Write a SERVLET program in java to accept details of student 
+(SeatNo, Stud_Name, Class, Total_Marks). Calculate percentage 
+and grade obtained and display details on page.
+import java.sql.*;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+@WebServlet("/htmls/CalStudPerServ")
+public class S18Q2_CalStudPerServ extends HttpServlet {
+Connection con=null;
+PreparedStatement pst = null;
+ResultSet rs = null;
+public void doPost(HttpServletRequest req,HttpServletResponse resp)throws IOException, 
+ServletException
+{
+resp.setContentType("text/html");
+PrintWriter out = resp.getWriter();
+int s_no=0,t_marks=0;
+double s_per=0.0;
+String s_grade="",s_name="",s_class="";
+try
+{
+s_no = Integer.parseInt(req.getParameter("txtsno"));
+s_name = req.getParameter("txtname");
+s_class = req.getParameter("txtclass");
+t_marks = Integer.parseInt(req.getParameter("txttmarks"));
+Class.forName("org.postgresql.Driver");
+con =
+DriverManager.getConnection("jdbc:postgresql://localhost:5433/TYCSDB","postgres","root");
+s_per = t_marks/5;
+if(s_per>=75)
+s_grade = "First Class with distinction";
+else if(s_per >= 60 && s_per < 75)
+s_grade = "First Class";
+else if(s_per >= 50 && s_per < 60)
+s_grade = "Second Class";
+else if(s_per >= 40 && s_per < 50)
+s_grade = "Pass Class";
+else
+s_grade = "Fail";
+pst = con.prepareStatement("insert into student values(?,?,?,?,?,?)");
+pst.setInt(1,s_no);
+pst.setString(2,s_name);
+pst.setString(3,s_class);
+pst.setInt(4,t_marks);
+pst.setDouble(5,s_per);
+pst.setString(6,s_grade);
+int rcount = pst.executeUpdate();
+Statement st = con.createStatement();
+rs = st.executeQuery("select * from student where seatno = "+s_no);
+out.println("<html>");
+out.println("<head><title>Search</title></head><body>");
+out.println("<h1>"+rcount+ "Row Inserted</h1>");
+if(rs.next())
+{
+out.println("<h1>" + rs.getInt(1) +
+"&nbsp;&nbsp"+rs.getString(2)+"&nbsp;&nbsp"+rs.getString(3)+"&nbsp;&nbsp"+rs.getInt(4)+"&n
+bsp;&nbsp"+rs.getDouble(5)+"&nbsp;&nbsp"+rs.getString(6)+"</h1>");
+}
+//resp.sendRedirect("error.html");
+out.println("</body>");
+out.println("</html>");
+}catch(Exception e)
+{
+out.println("<h1> Error - " + e + "</h1>");
+}
+}
+}
+
+
+SLIP-19
+Q1.Write a java program to accept ‘N’ Integers from a user store 
+them into LinkedList Collection and display only negative integers.
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.ListIterator;
+public class S19Q1_LinkedListNeg {
+public static void main(String[] args) {
+int n=0,i=0;
+BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+try {
+LinkedList noList = new LinkedList();
+System.out.println("Enter how many numbers you wants? ");
+n = Integer.parseInt(br.readLine());
+System.out.println("Enter "+n+"numbers");
+for(i=0;i<n;i++)
+{
+noList.add(Integer.parseInt(br.readLine()));
+}
+ListIterator li = noList.listIterator();
+while (li.hasNext()){
+int no = Integer.parseInt(""+li.next());
+if(no<0)
+System.out.print(" "+no);
+}
+} catch (Exception e) {
+System.out.println("Error = "+e);
+}
+}
+}
+Q2.Write a java program using SERVLET to accept username and 
+password, search them into database, if found then display 
+appropriate message on the browser otherwise display error 
+message.
+import java.io.*;
+import java.sql.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+@WebServlet("/htmls/S19Q2_UserPwdSearchServ")
+public class S19Q2_UserPwdSearchServ extends HttpServlet
+{
+Connection con = null;
+PreparedStatement pst = null;
+ResultSet rs = null;
+PrintWriter pw = null;
+String u_name="",u_pwd="";
+public void doPost(HttpServletRequest req, HttpServletResponse resp)throws
+IOException,ServletException
+{
+try{
+resp.setContentType("text/html");
+pw = resp.getWriter();
+Class.forName("org.postgresql.Driver");
+con =
+DriverManager.getConnection("jdbc:postgresql://localhost:5433/TYCSDB","postgres","root");
+u_name=req.getParameter("txtuname");
+u_pwd=req.getParameter("txtpwd");
+pst = con.prepareStatement("select * from usertbl where uname = ? and upwd = ?");
+pst.setString(1,u_name);
+pst.setString(2,u_pwd);
+rs = pst.executeQuery();
+if(rs.next())
+pw.println("<h1>Valid Username and Password</h1>");
+else
+pw.println("<h1>Invalid Username and Password</h1>");
+}catch(Exception e)
+{
+pw.println("<h1>Error = "+e+"</h1>");
+}
+}
+}
+
+
+SLIP-22
+Q1.Write a Menu Driven program in Java for the following: Assume 
+Employee table with attributes (ENo, EName, Salary) is already 
+created. 1. Insert 2. Update 3. Display 4. Exit.
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.lang.ref.PhantomReference;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+class EmpInfo{
+BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+Connection con = null;
+PreparedStatement pst = null;
+ResultSet rs = null;
+int eno;
+String ename;
+double esal;
+EmpInfo()
+{
+try {
+Class.forName("org.postgresql.Driver");
+con =
+DriverManager.getConnection("jdbc:postgresql://localhost:5432/TYCSDB","postgres","root");
+//con = 
+DriverManager.getConnection("jdbc:postgresql://localhost:5432/TYCSDB","postgres","root");
+System.out.println("con created..");
+} catch (Exception e) {
+System.out.println("Error = "+e);
+}
+}
+public void insertData()
+{
+try{
+System.out.println("Enter the employee info as eno,ename & esal");
+eno = Integer.parseInt(br.readLine());
+ename = br.readLine();
+esal = Double.parseDouble(br.readLine());
+pst = con.prepareStatement("insert into employee22 values(?,?,?)");
+pst.setInt(1,eno);
+pst.setString(2,ename);
+pst.setDouble(3,esal);
+pst.executeUpdate();
+System.out.println("Record Saved..");
+} catch (Exception e) {
+System.out.println("error = "+e);
+}
+}
+public void updateData()
+{
+try{
+System.out.println("Enter the employee info to update eno,ename & esal");
+eno = Integer.parseInt(br.readLine());
+ename = br.readLine();
+esal = Double.parseDouble(br.readLine());
+pst = con.prepareStatement("update employee22 set ename = ?,esal = ? where eno =?");
+pst.setString(1,ename);
+pst.setDouble(2,esal);
+pst.setInt(3,eno);
+pst.executeUpdate();
+System.out.println("Record Updated..");
+} catch (Exception e) {
+System.out.println("error = "+e);
+}
+}
+public void viewData()
+{
+try{
+pst = con.prepareStatement("select * from employee22");
+rs = pst.executeQuery();
+System.out.println("ENo\tName\tSal");
+while(rs.next()){
+System.out.println(rs.getInt(1)+"\t"+rs.getString(2)+"\t"+rs.getDouble(3));
+}
+} catch (Exception e) {
+System.out.println("error = "+e);
+}
+}
+}
+public class S22Q1_EmpDB {
+public static void main(String[] args) {
+int ch=0;
+BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+EmpInfo ei = new EmpInfo();
+try{
+while(ch!=4){
+System.out.println("1. Insert 2. Update 3. Display 4. Exit.\nEnter your choice : ");
+ch = Integer.parseInt(br.readLine());
+switch (ch){
+case 1: ei.insertData();
+break;
+case 2: ei.updateData();
+break;
+case 3: ei.viewData();
+break;
+case 4: System.exit(0);
+break;
+}
+}
+} catch (Exception e) {
+System.out.println("Error = "+e); }
+}
+Q2.Write a JSP program which accepts UserName in a TextField 
+and greets the user according to the time on server machine.
+<%@ page language="java"%>
+<!DOCTYPE html>
+<html>
+<head><title>Greeting User</title></head>
+<body>
+<h2>Enter Your Name</h2>
+<form method="post">
+Name: <input type="text" name="uname" required>
+<input type="submit" value="Greet Me">
+</form>
+ <%
+String uname = request.getParameter("uname");
+if (uname != null && !uname.isEmpty()) {
+java.util.Calendar calendar = java.util.Calendar.getInstance();
+int hour = calendar.get(java.util.Calendar.HOUR_OF_DAY);
+String greeting;
+if (hour >= 5 && hour < 12) {
+greeting = "Good Morning";
+} else if (hour >= 12 && hour < 17) {
+greeting = "Good Afternoon";
+} else if (hour >= 17 && hour < 21) {
+greeting = "Good Evening";
+} else {
+greeting = "Good Night";
+}
+%>
+<h3 style="color: blue;">
+<%= greeting %>, <%= uname %>!
+</h3>
+<%
+}
+%>
+</body>
+</html>
+
+
+
+SLIP-23
+Q1.Write a java program using Multithreading to accept a String 
+from a user and display each vowel from a String after every 3 
+seconds.
+Same as Slip-18 Q1.
+Q2.Write a java program to accept ‘N’ student names through 
+command line, store them into the appropriate Collection and 
+display them by using Iterator and ListIterator interface.
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.ListIterator;
+public class S23Q2_LinkedListCmd {
+public static void main(String[] args) {
+LinkedList sList = new LinkedList();
+for(int i=0;i<args.length;i++){
+sList.add(args[i]);
+}
+System.out.println(""+sList);
+Iterator it = sList.iterator();
+while(it.hasNext()){
+System.out.print(" "+it.next());
+}
+ListIterator lit = sList.listIterator();
+while(lit.hasNext()){
+System.out.print(" "+it.next());
+}
+}
+}
+
+
+SLIP-25
+Q1.Write a JSP program to accept Name and Age of Voter and 
+check whether he is eligible for voting or not.
+<%@ page language="java"%>
+<html>
+<head><title>Voting Eligibility</title></head>
+<body><h2>Check Age</h2>
+<form method="post">
+Enter your Age: <input type="text" name="txtage">
+<input type="submit" value="Check">
+</form>
+<%
+String StrAge = request.getParameter("txtage");
+if (StrAge != null && !StrAge.isEmpty())
+{
+int txtage = Integer.parseInt(StrAge);
+}
+if(txtage < 18)
+out.println("Not a Valid Age");
+else
+out.println("Valid Age");
+%>
+</body>
+</html>
+Q2.Write a Java Program for the following: Assume database is 
+already created.
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+class DDLQueryFrame extends JFrame implements ActionListener
+{
+JTextField txtCmd;
+JLabel lblCmd;
+JButton btnExecute;
+Connection con = null;
+Statement st = null;
+DDLQueryFrame()
+{
+setSize(800,200);
+setVisible(true);
+setLayout(new FlowLayout());
+txtCmd = new JTextField(30);
+lblCmd = new JLabel("Type Your DDL Query Here");
+btnExecute = new JButton("Execute Query");
+add(lblCmd); add(txtCmd); add(btnExecute);
+btnExecute.addActionListener(this);
+try {
+Class.forName("org.postgresql.Driver");
+con =
+DriverManager.getConnection("jdbc:postgresql://localhost:5433/TYCSDB","postgres","root");
+} catch (SQLException | ClassNotFoundException e) {
+throw new RuntimeException(e);
+}
+}
+public void actionPerformed(ActionEvent e)
+{
+try {
+String qStr = txtCmd.getText();
+st = con.createStatement();
+st.execute(qStr);
+JOptionPane.showMessageDialog(this,"Command Executed Successfully.");
+} catch (SQLException ex) {
+throw new RuntimeException(ex);
+}
+}
+}
+public class S25Q2_DDLCmds {
+public static void main(String[] args) {
+new DDLQueryFrame();
+}
+}
+
+
+SLIP-26
+Q1.Write a Java program to delete the details of given employee 
+(ENo EName Salary). Accept employee ID through command line. 
+(Use PreparedStatement Interface)
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+class EmpDetails{
+Connection con = null;
+PreparedStatement pst = null;
+EmpDetails()
+{
+try {
+Class.forName("org.postgresql.Driver");
+con = DriverManager.getConnection ("jdbc:postgresql://localhost:5432/ TYCSDB", 
+ "postgres","root");
+System.out.println("con created..");
+} catch (Exception e) {
+System.out.println("Error = "+e);
+}
+}
+public void deleteData(int eid)
+{
+try{
+pst = con.prepareStatement("Delete from employee26 where eno =?");
+pst.setInt(1,eid);
+pst.executeUpdate();
+System.out.println("Record Deleted..");
+} catch (Exception e) {
+System.out.println("error = "+e);
+}
+}
+}
+public class S26Q1_EmpDBCMD {
+public static void main(String[] args) {
+EmpDetails ed = new EmpDetails();
+ed.deleteData(Integer.parseInt(args[0]));
+}
+}
+Q2.Write a JSP program to calculate sum of first and last digit of a 
+given number. Display sum in Red Color with font size 18.
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head><title>Sum of First and Last Digit</title></head>
+<body><h2>Sum of First and Last Digit</h2>
+<form method="post">
+Enter a txtno: <input type="text" name="txtno">
+<input type="submit" value="Calculate">
+</form>
+<%
+String noStr = request.getParameter("txtno");
+if (noStr != null && !noStr.isEmpty()) {
+try {
+int txtno = Integer.parseInt(noStr);
+int lDigit = txtno % 10;
+int fDigit = 0;
+// Find the first digit
+while (txtno != 0) {
+fDigit = txtno % 10;
+txtno = txtno / 10;
+}
+int sum = fDigit + lDigit;
+out.println("<br><br><h1>Sum of first and last digit: " + sum+"</h1></br></br>");
+} catch (NumberFormatException e) {
+out.println("<p style='color:red; font-size:18px;'>Invalid input. Please enter a valid 
+txtno.</p>");
+}
+} else {
+out.println("<p style='color:red; font-size:18px;'>Please enter a txtno.</p>");
+}
+%>
+</body>
+</html>
+
+
+SLIP-28
+Q1.Write a JSP script to accept a String from a user and display it in 
+reverse order.
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head><title>Reverse String</title></head>
+<body><h2>Reverse a String</h2>
+<form method="post">
+Enter a string: <input type="text" name="inputStr">
+<input type="submit" value="Reverse">
+</form>
+<%
+if (request.getMethod().equalsIgnoreCase("POST")) {
+String inputStr = request.getParameter("inputStr");
+if (inputStr != null && !inputStr.isEmpty()) {
+// Reverse the string
+//String revString = new StringBuilder(inputStr).reverse().toString();
+String revString = new StringBuffer(inputStr).reverse().toString();
+out.println("<p>Original String: " + inputStr + "</p>");
+out.println("<p>Reversed String: <strong>" + revString + "</strong></p>");
+} else {
+out.println("<p style='color:red;'>Please enter a string.</p>");
+}
+}
+%>
+</body></html>
+Q2.Write a java program to display name of currently executing 
+Thread in multithreading.
+Same as Slip-15 Q1.
+
+
+SLIP-29
+Q1.Write a Java program to display information about all columns 
+in the DONAR table using ResultSetMetaData.
+import java.sql.*;
+public class S29Q1_DonarRSMetadata {
+public static void main(String[] args) {
+Connection con = null;
+Statement st = null;
+ResultSet rs = null;
+ResultSetMetaData rsmd = null;
+try {
+Class.forName("org.postgresql.Driver");
+con =
+DriverManager.getConnection("jdbc:postgresql://localhost:5433/TYCSDB","postgres","root");
+System.out.println("con created..");
+st = con.createStatement();
+rs = st.executeQuery("Select * from donar");
+rsmd = rs.getMetaData();
+int noofCol = rsmd.getColumnCount();
+System.out.println("No of Column ="+noofCol);
+System.out.println("Col Name\tData Type\tSize");
+for(int i=1;i<=noofCol;i++)
+System.out.println(rsmd.getColumnName(i)+"\t\t"+rsmd.getColumnTypeName(i)+"\t\t"+
+rsmd.getColumnDisplaySize(i));
+} catch (Exception e) {
+System.out.println("Error = "+e);
+}
+}
+}
+Q2.Write a Java program to create LinkedList of integer objects and 
+perform the following: i. Add element at first position ii. Delete last 
+element iii. Display the size of link list
+import java.util.*;
+public class S29Q2_LinkedListOP
+{
+public static void main(String[] args)
+{
+LinkedList<Integer> l = new LinkedList<>();
+ l.addFirst(10);
+l.addFirst(20);
+l.addFirst(30);
+System.out.println("List after adding elements at first position: " + l);
+ l.removeLast();
+System.out.println("List after deleting last element: " + l);
+System.out.println("Size of the List: " + l.size());
+}
+}`;
+
+    // Escape HTML characters
+    let escapedCode = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    
+    // Display in preformatted text
+    document.getElementById("code-block").innerHTML = escapedCode;
+</script>
+
+</body>
+</html>
